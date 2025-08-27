@@ -13,53 +13,59 @@
 </head>
 <body class="bg-black">
      <section>
-        <div class="h-screen w-[100px] flex flex-col justify-between items-center border fixed top-0 bottom-0 text-white p-2 border-none">
-            <div class="text-3xl p-3"><i class="fa-solid fa-cloud"></i></div>
-             <div class="flex flex-col bg-transparent rounded-xl p-3 gap-5 shadow-lg w-16 items-center">
-    @php
-        $navItems = [
-            ['route' => 'welcome', 'icon' => 'fa-house', 'label' => 'Home' , 'class' => 'text-2xl p-3 rounded-xl bg-transparent'],
-            ['route' => 'search.account', 'icon' => 'fa-magnifying-glass', 'label' => 'Search' , 'class' => 'text-2xl p-3 rounded-xl bg-transparent'],
-            ['route' => 'post.something', 'icon' => 'fa-plus', 'label' => 'Post' , 'class' => 'text-3xl p-3 rounded-xl bg-[#2D2D2D]'],
-            ['route' => 'welcome', 'icon' => 'fa-heart', 'label' => 'Likes' , 'class' => 'text-2xl p-3 rounded-xl bg-transparent', 'notification' => ['class' => 'w-[10px] h-[10px] bg-red-400 rounded-full absolute top-[5px] left-[35px]']],
-            ['route' => 'show.user.account', 'icon' => 'fa-user', 'label' => 'Profile' , 'class' => 'text-2xl p-3 rounded-xl bg-transparent'],
-        ];
-    @endphp
-
-    @foreach ($navItems as $item)
-        @php
-            $isActive = request()->routeIs($item['route']);
-        @endphp
-
-        <a href="{{ route($item['route']) }}"
-           class="group relative flex items-center justify-center w-12 h-12 rounded-lg transition-all duration-200 
-               {{ $isActive ?  'text-white shadow-inner' : 'text-[#404040] hover:text-white hover:bg-[#2a2a2a]' }}">
-           
-            <div class="relative">
-              <i class="fa-solid {{ $item['icon'] }} {{ $item['class'] }}"></i>
-              @if (!empty($item['notification']))
-                <div id='notify' class="{{ $item['notification']['class'] }}"></div>
-              @endif
-            </div>
-
-            <span class="absolute left-14 opacity-0 group-hover:opacity-100 bg-white text-black text-sm rounded px-2 py-1 shadow transition-opacity duration-300">
-                {{ $item['label'] }}
-            </span>
-        </a>
-    @endforeach
-</div>
-            <div>
-              @if(Auth::check())
-              <a href="{{URL('logout')}}"  class="text-3xl text-[#404040] p-3 duration-200 hover:opacity-100"
-                 onclick="return confirm('Are you sure you want to logout?');"><i class="fa-solid fa-right-from-bracket"></i></a>
-              @else
-              
-              @endif
-            </div>
+<div class="fixed bottom-0 w-full md:w-[100px] md:h-screen flex md:flex-col justify-between items-center bg-black text-white p-2 z-50">
+        <!-- Top Logo -->
+        <div class="text-3xl p-3 hidden md:block">
+            <i class="fa-solid fa-cloud"></i>
         </div>
+
+        <!-- Navigation Items -->
+        <div class="flex md:flex-col justify-around md:justify-start bg-transparent md:rounded-xl p-3 gap-5 shadow-lg w-full md:w-16 items-center">
+            @php
+                $navItems = [
+                    ['route' => 'welcome', 'icon' => 'fa-house', 'label' => 'Home' , 'class' => 'text-2xl p-3 rounded-xl bg-transparent'],
+                    ['route' => 'search.account', 'icon' => 'fa-magnifying-glass', 'label' => 'Search' , 'class' => 'text-2xl p-3 rounded-xl bg-transparent'],
+                    ['route' => 'post.something', 'icon' => 'fa-plus', 'label' => 'Post' , 'class' => 'text-3xl p-3 rounded-xl bg-[#2D2D2D]'],
+                    ['route' => 'notify.user', 'icon' => 'fa-heart', 'label' => 'Likes' , 'class' => 'text-2xl p-3 rounded-xl bg-transparent', 'notification' => ['class' => 'w-[10px] h-[10px] bg-red-400 rounded-full absolute top-[5px] left-[35px]']],
+                    ['route' => 'show.user.account', 'icon' => 'fa-user', 'label' => 'Profile' , 'class' => 'text-2xl p-3 rounded-xl bg-transparent'],
+                ];
+            @endphp
+
+            @foreach ($navItems as $item)
+                @php
+                    $isActive = request()->routeIs($item['route']);
+                @endphp
+                <a href="{{ route($item['route']) }}"
+                   class="group relative flex items-center justify-center w-12 h-12 rounded-lg transition-all duration-200 
+                       {{ $isActive ?  'text-white shadow-inner' : 'text-[#404040] hover:text-white hover:bg-[#2a2a2a]' }}">
+                    <div class="relative">
+                        <i class="fa-solid {{ $item['icon'] }} {{ $item['class'] }}"></i>
+                        @if (!empty($item['notification']))
+                            <div id='notify' class="{{ $item['notification']['class'] }}"></div>
+                        @endif
+                    </div>
+                    <!-- Tooltip (hidden on small screens) -->
+                    <span class="absolute left-14 opacity-0 group-hover:opacity-100 bg-white text-black text-sm rounded px-2 py-1 shadow transition-opacity duration-300 hidden md:block">
+                        {{ $item['label'] }}
+                    </span>
+                </a>
+            @endforeach
+        </div>
+
+        <!-- Logout -->
+        <div class="hidden md:block">
+            @if(Auth::check())
+                <a href="{{ URL('logout') }}" class="text-3xl text-[#404040] p-3 duration-200 hover:opacity-100"
+                   onclick="return confirm('Are you sure you want to logout?');">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+            @endif
+        </div>
+    </div>
+
         <div class="flex flex-col justify-center items-center w-full h-screen gap-4 p-3 text-white text-center">
             <h1 class="capitalize text-3xl underline">post your ideas</h1>
-        <form id="post-form" enctype="multipart/form-data" class="w-[500px] border border-gray-400 rounded-md p-9 flex flex-col gap-5">
+        <form id="post-form" enctype="multipart/form-data" class="w-full md:w-[500px] border border-gray-400 rounded-md p-9 flex flex-col gap-5">
             @csrf
              @if($errors->any())
                     <ul>
@@ -71,7 +77,7 @@
              <div class="relative inline-block w-full">
             <label class="bg-black text-gray-500 px-[145px] py-2 border border-gray-600 w-full rounded cursor-pointer hover:border-white hover:text-white transition">
                      Upload image
-            <input type="file" name="image" id='image' class="absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer" />
+            <input type="file" name="image" id='image' class="absolute left-0 top-0 h-full opacity-0 cursor-pointer" />
             </label>
             </div>
             <div>
