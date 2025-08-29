@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountInteractivityController;
 use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\EmailsController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\NotifyController;
@@ -10,7 +11,7 @@ use App\Http\Controllers\UserAccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthUser;
-
+use App\Models\Comments;
 
 Route::get('/', function () {
     return view('splash');
@@ -68,6 +69,12 @@ Route::controller(LikesController::class)->group(function () {
 
     Route::post('/like/post', 'likeinteractivity')->middleware(AuthUser::class);
     Route::get('/check/like/{id}', 'checkLike');
+});
+
+Route::controller(CommentsController::class)->group(function () {
+
+    // Route::post('/like/post', 'likeinteractivity')->middleware(AuthUser::class);
+    Route::get('/comments/load/{id}/{page}', 'getComments');
 });
 
 Route::controller(BookmarkController::class)->group(function(){

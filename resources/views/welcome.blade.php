@@ -82,7 +82,6 @@
         <!-- Posts Container -->
         <div id="parent-container" class='w-full md:w-[600px] bg-[#151515] rounded-md mt-[50px]'>
             <div id="post-container"></div>
-
             <!-- Loader -->
             <div id='loader' class="hidden">
                 @for ($i = 1; $i < 3; $i++)
@@ -102,6 +101,80 @@
                 @endfor
             </div>
         </div>
+    </div>
+</section>
+
+<section id='comment-section' class="hidden fixed top-0 w-full h-screen bg-black/30">
+        {{-- comment box --}}
+    <div id="comment-container" class="w-[400px] h-screen bg-[#3b3b3b] absolute right-0 transition-transform transform duration-500 ease-in-out translate-x-[400px]">
+        <h1 id="cross" class="text-2xl bg-black/25 text-white font-light text-right p-3 capitalize cursor-pointer"><i class="fa-solid fa-xmark duration-150 hover:rotate-[50deg]"></i></h1>
+        <div class="flex flex-col space-y-[20px] p-2 relative overflow-y-auto h-full">
+           <div id="Comments-loader" class="space-y-[20px] hidden">
+             @for ($i = 0; $i <= 5; $i++)
+               <!-- From Uiverse.io by Deri-Kurniawan --> 
+        <div class="flex flex-row gap-2">
+        <div class="animate-pulse bg-gray-300 w-12 h-12 rounded-full"></div>
+        <div class="flex flex-col gap-2">
+        <div class="animate-pulse bg-gray-300 w-28 h-5 rounded-full"></div>
+        <div class="animate-pulse bg-gray-300 w-[250px] h-5 rounded-full"></div>
+        </div>
+        </div>
+            @endfor
+        </div>
+        <div id="comment-box" class="flex flex-col space-y-[20px] p-2 relative overflow-y-auto h-full">
+
+        </div>
+           </div>
+        {{-- form --}}
+<form id="comment-form" class="fixed bottom-0 p-2">
+<div class="messageBox">
+  <div class="fileUploadWrapper">
+    <label for="file">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 337 337">
+        <circle
+          stroke-width="20"
+          stroke="#6c6c6c"
+          fill="none"
+          r="158.5"
+          cy="168.5"
+          cx="168.5"
+        ></circle>
+        <path
+          stroke-linecap="round"
+          stroke-width="25"
+          stroke="#6c6c6c"
+          d="M167.759 79V259"
+        ></path>
+        <path
+          stroke-linecap="round"
+          stroke-width="25"
+          stroke="#6c6c6c"
+          d="M79 167.138H259"
+        ></path>
+      </svg>
+      <span class="tooltip">Add an image</span>
+    </label>
+    <input type="file" id="file" name="file" />
+  </div>
+  <input required="" placeholder="Message..." type="text" id="messageInput" />
+  <button id="sendButton" type="submit">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 664 663">
+      <path
+        fill="none"
+        d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
+      ></path>
+      <path
+        stroke-linejoin="round"
+        stroke-linecap="round"
+        stroke-width="33.67"
+        stroke="#6c6c6c"
+        d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
+      ></path>
+    </svg>
+  </button>
+</div>
+
+</form>
     </div>
 </section>
 

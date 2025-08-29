@@ -111,10 +111,10 @@
             <div class="p-3">
                 <button id="edit" class="w-full py-1 capitalize font-light text-white rounded-md cursor-pointer border-1 border-sky-200">edit profile</button>
             </div>
-            <div class="flex justify-between items-center gap-3 px-[50px] md:px-[100px]">
-                <button id="eye" class="py-1 px-[20px] capitalize font-light text-white cursor-pointer border-b-1 border-r-0 border-l-0 border-t-0 text-xl"><i class="fa-solid fa-eye"></i></button>
-                <button id="like" class="py-1 px-[20px] capitalize font-light text-white cursor-pointer border-b-1 border-r-0 border-l-0 border-t-0 text-xl"><i class="fa-regular fa-heart"></i></button>
-                <button id="bookmark" class="py-1 px-[20px] capitalize font-light text-white cursor-pointer border-b-1 border-r-0 border-l-0 border-t-0 text-xl"><i class="fa-regular fa-bookmark"></i></button>
+            <div class="flex justify-between items-center gap-3 mt-[30px] px-[50px] md:px-[100px]">
+                <button id="eye" class="py-1 px-[20px] capitalize font-light text-black bg-white rounded-md cursor-pointer text-xl duration-200 hover:scale-110"><i class="fa-solid fa-eye"></i></button>
+                <button id="like" class="py-1 px-[20px] capitalize font-light text-black bg-white rounded-md cursor-pointer text-xl duration-200 hover:scale-110"><i class="fa-solid fa-heart"></i></button>
+                <button id="bookmark" class="py-1 px-[20px] capitalize font-light text-black bg-white rounded-md cursor-pointer text-xl duration-200 hover:scale-110"><i class="fa-solid fa-bookmark"></i></button>
             </div>
             <div id='activity' class="text-white h-full">
                 <h1 id="no-post" class="text-3xl capitalize text-white font-light text-center">no post</h1>

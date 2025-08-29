@@ -121,6 +121,31 @@ document.addEventListener("DOMContentLoaded", async function () {
         const comment = document.createElement("button");
         comment.className = "text-[#9F9F9F] cursor-pointer";
         comment.innerHTML = '<i class="fa-regular fa-comments"></i>';
+        const Comment_container = document.getElementById("comment-container");
+        const Comment_section = document.getElementById("comment-section");
+        const Comment_box = document.getElementById("comment-box");
+        const cross_btn = document.getElementById("cross");
+        comment.addEventListener("click", function () {
+            Comment_section.classList.remove("hidden");
+            setTimeout(() => {
+                Comment_container.classList.replace(
+                    "translate-x-[400px]",
+                    "translate-x-[0px]"
+                );
+                commentsLoad(post.id, Comment_box);
+            }, 100);
+            console.log("clicked");
+        });
+        cross_btn.onclick = function () {
+            Comment_container.classList.replace(
+                "translate-x-[0px]",
+                "translate-x-[400px]"
+            );
+            setTimeout(() => {
+                Comment_section.classList.add("hidden");
+            }, 500);
+        };
+
         const share = document.createElement("button");
         share.className = "text-[#9F9F9F] cursor-pointer";
         share.innerHTML = '<i class="fa-solid fa-share"></i>';
@@ -133,9 +158,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         bookmarkbtn = await checkBookmark(post.id);
         const Bookmarkicon = bookmark.querySelector("i");
         Bookmarkicon.classList.replace(
-                bookmarkbtn ? "fa-regular" : "fa-solid",
-                bookmarkbtn ? "fa-solid" : "fa-regular"
-            );
+            bookmarkbtn ? "fa-regular" : "fa-solid",
+            bookmarkbtn ? "fa-solid" : "fa-regular"
+        );
         bookmark.addEventListener("click", async function () {
             bookmarkbtn = !bookmarkbtn;
             console.log(bookmarkbtn);
@@ -143,7 +168,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 bookmarkbtn ? "fa-regular" : "fa-solid",
                 bookmarkbtn ? "fa-solid" : "fa-regular"
             );
-            await postBookmark(post.id , bookmarkbtn);
+            await postBookmark(post.id, bookmarkbtn);
         });
 
         lefticons.append(like, comment, share);
@@ -293,7 +318,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 method: "POST",
                 headers: myheader,
                 body: JSON.stringify(
-                    isbookmark ? { bookmark : id } : { removeMark : id }
+                    isbookmark ? { bookmark: id } : { removeMark: id }
                 ),
             });
 
@@ -334,7 +359,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     };
 
-        // Will store like status
+    // Will store like status
     const checkBookmark = async (id) => {
         try {
             const res = await fetch(`check/bookmark/${id}`, {
@@ -352,6 +377,80 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     };
 
+    const commentsLoad = async (id, container) => {
+        let page = 1;
+        const loader = document.getElementById("Comments-loader");
+        container.innerHTML = "";
+        loader.classList.replace("hidden", "block");
+        try {
+            const res = await fetch(`/comments/load/${id}/${page}`, {
+                method: "get",
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                page++;
+                const response_comments = data.comments;
+                if (response_comments.length === 0) {
+                    loader.classList.replace("block", "hidden");
+                    return (container.innerHTML =
+                        '<p class="text-center text-white font-light capitalize">no comments</p>');
+                }
+                response_comments.forEach((comment) => {
+                    const commentWrapper = document.createElement("div");
+                    commentWrapper.className = "comment-wrapper mb-6";
+
+                    const accountEl = document.createElement("div");
+                    accountEl.className =
+                        "post-account flex items-center space-x-3 mb-3";
+
+                    const accImg = document.createElement("img");
+                    accImg.className =
+                        "acc-image w-10 h-10 rounded-full bg-gray-200";
+                    accImg.src =
+                        comment.useracc?.image || "/default-profile.png";
+                    accImg.style.objectFit = "cover";
+
+                    const isCurrentUser =
+                        data.auth_acc?.name === comment.useracc?.name;
+
+                    const accInfo = document.createElement("div");
+                    accInfo.className = "acc-info";
+
+                    const userName = comment.useracc?.name || "Unknown";
+                    const profileLink = isCurrentUser
+                        ? "/show/account"
+                        : `/get/acc/by/name/${userName}`;
+
+                    accInfo.innerHTML = `
+        <a href="${profileLink}" class="acc-name text-white font-light hover:underline">
+            ${userName}
+        </a>
+        <div class="acc-timestamp text-sm text-[#717171]">
+            ${timeAgo(comment.created_at)}
+        </div>
+    `;
+
+                    const commentContent = document.createElement("p");
+                    commentContent.className = "text-white text-sm ml-[53px]";
+                    commentContent.textContent =
+                        comment.comments || "[No comment content]";
+
+                    accountEl.appendChild(accImg);
+                    accountEl.appendChild(accInfo);
+                    commentWrapper.appendChild(accountEl);
+                    commentWrapper.appendChild(commentContent);
+                    loader.classList.replace("block", "hidden");
+                    container.appendChild(commentWrapper);
+                });
+            } else {
+                console.log("response fail");
+            }
+        } catch {
+            console.log("err");
+        } finally {
+        }
+    };
 
     const timeAgo = (time) => {
         const now = new Date();
@@ -378,7 +477,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     window.addEventListener("scroll", async function () {
         if (
             window.innerHeight + window.scrollY >=
-            document.body.offsetHeight - 200
+            document.body.offsetHeight - 400
         ) {
             await infiniteLoading();
         }
@@ -389,6 +488,4 @@ document.addEventListener("DOMContentLoaded", async function () {
         await infiniteLoading();
         block = false;
     }
-
-    // notification
 });

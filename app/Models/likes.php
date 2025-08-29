@@ -10,6 +10,6 @@ class likes extends Model
     use HasFactory;
     //
     public function user_acc(){
-        return $this->belongsTo(UserAccount::class , 'acc_id');
+        return $this->belongsTo(UserAccount::class , 'account_id');
     }
 }
