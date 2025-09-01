@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let requesting = false;
     const postsContainer = document.getElementById("post-container");
     let posts = null;
+    let iscomment = false;
     // let connection_err = false;
     const csrfToken = document
         .querySelector("meta[name='csrf-token']")
@@ -13,7 +14,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const CreatePost = async (post, authuser) => {
         // Create post container
         const postEl = document.createElement("div");
-        postEl.className = "post-container border-b border-gray-300 w-full p-4";
+        postEl.className =
+            "post-container border-b border-[#434343] w-full p-4";
 
         // Account Info
         const accountEl = document.createElement("div");
@@ -120,7 +122,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // comment system
         const comment = document.createElement("button");
         comment.className = "text-[#9F9F9F] cursor-pointer";
-        comment.innerHTML = '<i class="fa-regular fa-comments"></i>';
+        comment.innerHTML = '<i class="fa-regular fa-comments"></i><span class="text-white capitalize ml-1 text-[12px]">comments</span>';
         const Comment_container = document.getElementById("comment-container");
         const Comment_section = document.getElementById("comment-section");
         const Comment_box = document.getElementById("comment-box");
@@ -133,6 +135,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     "translate-x-[0px]"
                 );
                 commentsLoad(post.id, Comment_box);
+                commentPost(post.id, Comment_box);
             }, 100);
             console.log("clicked");
         });
@@ -246,8 +249,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         } catch (err) {
             loading.classList.replace("flex-col", "hidden");
-            postsContainer.innerHTML = "";
-            postsContainer.textContent = err;
+            requesting = true;
+            postsContainer.appendChild(err);
             console.log(err);
         } finally {
             loading.classList.replace("flex-col", "hidden");
@@ -452,11 +455,92 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     };
 
+    const commentPost = (id, container) => {
+        if (iscomment) return;
+        const form = document.getElementById("comment-form");
+        form.addEventListener("submit", async function (e) {
+            iscomment = true;
+            let commentText = document.getElementById("messageInput").value;
+            e.preventDefault();
+            const send_button = document.getElementById("sendButton");
+            const loading_snnipt = document.getElementById("loading");
+            send_button.style.display = "none";
+            loading_snnipt.classList.replace("hidden", "flex");
+            let myheader = new Headers();
+            myheader.append("Content-Type", "application/json");
+            myheader.append("X-CSRF-TOKEN", csrfToken);
+            try {
+                const res = await fetch("/comment/post", {
+                    method: "post",
+                    headers: myheader,
+                    body: JSON.stringify({ post_id: id, comment: commentText }),
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const user_acc = data.auth_acc;
+                    if(user_acc == null) {
+                        throw new Error('log in first');
+                    }
+                    const commentWrapper = document.createElement("div");
+                    commentWrapper.className = "comment-wrapper mb-6";
+
+                    const accountEl = document.createElement("div");
+                    accountEl.className =
+                        "post-account flex items-center space-x-3 mb-3";
+
+                    const accImg = document.createElement("img");
+                    accImg.className =
+                        "acc-image w-10 h-10 rounded-full bg-gray-200";
+                    accImg.src = user_acc?.image || "/default-profile.png";
+                    accImg.style.objectFit = "cover";
+
+                    const accInfo = document.createElement("div");
+                    accInfo.className = "acc-info";
+
+                    const userName = user_acc?.name || "Unknown";
+                    const profileLink = "/show/account";
+
+                    accInfo.innerHTML = `
+        <a href="${profileLink}" class="acc-name text-white font-light hover:underline">
+            ${userName}
+        </a>
+        <div class="acc-timestamp text-sm text-[#717171]">
+            ${timeAgo(new Date())}
+        </div>
+    `;
+
+                    const commentContent = document.createElement("p");
+                    commentContent.className = "text-white text-sm ml-[53px]";
+                    commentContent.textContent =
+                        commentText || "[No comment content]";
+
+                    document.getElementById("messageInput").value = "";
+                    accountEl.appendChild(accImg);
+                    accountEl.appendChild(accInfo);
+                    commentWrapper.appendChild(accountEl);
+                    commentWrapper.appendChild(commentContent);
+                    send_button.style.display = "flex";
+                    loading_snnipt.classList.replace("flex", "hidden");
+                    container.prepend(commentWrapper);
+                }
+            } catch (err) {
+                console.log(err.response.err);
+                alert(err.response.err);
+                iscomment = true;
+            }finally{
+                iscomment = false;
+            }
+        });
+    };
+
     const timeAgo = (time) => {
         const now = new Date();
         const then = new Date(time);
         const seconds = Math.floor((now - then) / 1000);
 
+        if (seconds < 10) {
+            return "now";
+        }
         if (seconds < 60) {
             return `${seconds}s ago`;
         }
@@ -474,12 +558,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     };
 
-    window.addEventListener("scroll", async function () {
+    window.addEventListener("scroll", function () {
         if (
             window.innerHeight + window.scrollY >=
             document.body.offsetHeight - 400
         ) {
-            await infiniteLoading();
+            infiniteLoading();
         }
     });
 

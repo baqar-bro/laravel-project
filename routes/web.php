@@ -73,8 +73,8 @@ Route::controller(LikesController::class)->group(function () {
 
 Route::controller(CommentsController::class)->group(function () {
 
-    // Route::post('/like/post', 'likeinteractivity')->middleware(AuthUser::class);
     Route::get('/comments/load/{id}/{page}', 'getComments');
+    Route::post('/comment/post' , 'postComment')->middleware(AuthUser::class);
 });
 
 Route::controller(BookmarkController::class)->group(function(){
