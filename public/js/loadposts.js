@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     let requesting = false;
     const postsContainer = document.getElementById("post-container");
     let posts = null;
-    let iscomment = false;
     // let connection_err = false;
     const csrfToken = document
         .querySelector("meta[name='csrf-token']")
@@ -122,11 +121,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         // comment system
         const comment = document.createElement("button");
         comment.className = "text-[#9F9F9F] cursor-pointer";
-        comment.innerHTML = '<i class="fa-regular fa-comments"></i><span class="text-white capitalize ml-1 text-[12px]">comments</span>';
+        comment.innerHTML =
+            '<i class="fa-regular fa-comments"></i><span class="text-white capitalize ml-1 text-[12px]">comments</span>';
         const Comment_container = document.getElementById("comment-container");
         const Comment_section = document.getElementById("comment-section");
         const Comment_box = document.getElementById("comment-box");
         const cross_btn = document.getElementById("cross");
+        // comment post & load
         comment.addEventListener("click", function () {
             Comment_section.classList.remove("hidden");
             setTimeout(() => {
@@ -134,10 +135,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                     "translate-x-[400px]",
                     "translate-x-[0px]"
                 );
-                commentsLoad(post.id, Comment_box);
-                commentPost(post.id, Comment_box);
-            }, 100);
-            console.log("clicked");
+            }, 200);
+            commentsLoad(post.id, Comment_box);
+            commentPost(post.id , Comment_box);
         });
         cross_btn.onclick = function () {
             Comment_container.classList.replace(
@@ -209,8 +209,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             };
             postImage.onerror = () => {
                 imageload.innerHTML =
-                    '<p class"text-xl text-red-500 capitalize font-light"><i class="fa-solid fa-rotate-right"></i></p>';
-                connection_err = true;
+                    '<p class"text-2xl text-red-500 capitalize font-light"><i class="fa-solid fa-rotate-right"></i></p>';
             };
         }
         postEl.appendChild(postText);
@@ -235,6 +234,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (res.ok) {
                 const data = await res.json();
                 posts = data.posts ?? null;
+                console.log(posts);
                 authuser = data.authuser ?? null;
                 if (Array.isArray(posts) && posts.length > 0) {
                     await Promise.allSettled(
@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             loading.classList.replace("flex-col", "hidden");
             requesting = true;
             postsContainer.appendChild(err);
-            console.log(err);
+            console.log(err.message);
         } finally {
             loading.classList.replace("flex-col", "hidden");
             if (posts.length == 0) {
@@ -385,47 +385,48 @@ document.addEventListener("DOMContentLoaded", async function () {
         const loader = document.getElementById("Comments-loader");
         container.innerHTML = "";
         loader.classList.replace("hidden", "block");
-        try {
-            const res = await fetch(`/comments/load/${id}/${page}`, {
-                method: "get",
-            });
+        setTimeout(async () => {
+            try {
+                const res = await fetch(`/comments/load/${id}/${page}`, {
+                    method: "get",
+                });
 
-            if (res.ok) {
-                const data = await res.json();
-                page++;
-                const response_comments = data.comments;
-                if (response_comments.length === 0) {
-                    loader.classList.replace("block", "hidden");
-                    return (container.innerHTML =
-                        '<p class="text-center text-white font-light capitalize">no comments</p>');
-                }
-                response_comments.forEach((comment) => {
-                    const commentWrapper = document.createElement("div");
-                    commentWrapper.className = "comment-wrapper mb-6";
+                if (res.ok) {
+                    const data = await res.json();
+                    page++;
+                    const response_comments = data.comments;
+                    if (response_comments.length === 0) {
+                        loader.classList.replace("block", "hidden");
+                        return (container.innerHTML =
+                            '<p class="text-center text-white font-light capitalize">no comments</p>');
+                    }
+                    response_comments.forEach((comment) => {
+                        const commentWrapper = document.createElement("div");
+                        commentWrapper.className = "comment-wrapper mb-6";
 
-                    const accountEl = document.createElement("div");
-                    accountEl.className =
-                        "post-account flex items-center space-x-3 mb-3";
+                        const accountEl = document.createElement("div");
+                        accountEl.className =
+                            "post-account flex items-center space-x-3 mb-3";
 
-                    const accImg = document.createElement("img");
-                    accImg.className =
-                        "acc-image w-10 h-10 rounded-full bg-gray-200";
-                    accImg.src =
-                        comment.useracc?.image || "/default-profile.png";
-                    accImg.style.objectFit = "cover";
+                        const accImg = document.createElement("img");
+                        accImg.className =
+                            "acc-image w-10 h-10 rounded-full bg-gray-200";
+                        accImg.src =
+                            comment.useracc?.image || "/default-profile.png";
+                        accImg.style.objectFit = "cover";
 
-                    const isCurrentUser =
-                        data.auth_acc?.name === comment.useracc?.name;
+                        const isCurrentUser =
+                            data.auth_acc?.name === comment.useracc?.name;
 
-                    const accInfo = document.createElement("div");
-                    accInfo.className = "acc-info";
+                        const accInfo = document.createElement("div");
+                        accInfo.className = "acc-info";
 
-                    const userName = comment.useracc?.name || "Unknown";
-                    const profileLink = isCurrentUser
-                        ? "/show/account"
-                        : `/get/acc/by/name/${userName}`;
+                        const userName = comment.useracc?.name || "Unknown";
+                        const profileLink = isCurrentUser
+                            ? "/show/account"
+                            : `/get/acc/by/name/${userName}`;
 
-                    accInfo.innerHTML = `
+                        accInfo.innerHTML = `
         <a href="${profileLink}" class="acc-name text-white font-light hover:underline">
             ${userName}
         </a>
@@ -434,32 +435,34 @@ document.addEventListener("DOMContentLoaded", async function () {
         </div>
     `;
 
-                    const commentContent = document.createElement("p");
-                    commentContent.className = "text-white text-sm ml-[53px]";
-                    commentContent.textContent =
-                        comment.comments || "[No comment content]";
+                        const commentContent = document.createElement("p");
+                        commentContent.className =
+                            "text-white text-sm ml-[53px]";
+                        commentContent.textContent =
+                            comment.comments || "[No comment content]";
 
-                    accountEl.appendChild(accImg);
-                    accountEl.appendChild(accInfo);
-                    commentWrapper.appendChild(accountEl);
-                    commentWrapper.appendChild(commentContent);
-                    loader.classList.replace("block", "hidden");
-                    container.appendChild(commentWrapper);
-                });
-            } else {
-                console.log("response fail");
+                        accountEl.appendChild(accImg);
+                        accountEl.appendChild(accInfo);
+                        commentWrapper.appendChild(accountEl);
+                        commentWrapper.appendChild(commentContent);
+                        loader.classList.replace("block", "hidden");
+                        container.appendChild(commentWrapper);
+                    });
+                } else {
+                    console.log("response fail");
+                }
+            } catch {
+                console.log("err");
+            } finally {
             }
-        } catch {
-            console.log("err");
-        } finally {
-        }
+        }, 1000);
     };
 
-    const commentPost = (id, container) => {
-        if (iscomment) return;
+    const commentPost = (id,CommentBox) => {
+        // comment post
         const form = document.getElementById("comment-form");
-        form.addEventListener("submit", async function (e) {
-            iscomment = true;
+        form.onsubmit = async function (e) {
+            console.log(id);
             let commentText = document.getElementById("messageInput").value;
             e.preventDefault();
             const send_button = document.getElementById("sendButton");
@@ -469,17 +472,21 @@ document.addEventListener("DOMContentLoaded", async function () {
             let myheader = new Headers();
             myheader.append("Content-Type", "application/json");
             myheader.append("X-CSRF-TOKEN", csrfToken);
+
             try {
                 const res = await fetch("/comment/post", {
                     method: "post",
                     headers: myheader,
-                    body: JSON.stringify({ post_id: id, comment: commentText }),
+                    body: JSON.stringify({
+                        post_id: id,
+                        comment: commentText,
+                    }),
                 });
                 if (res.ok) {
                     const data = await res.json();
                     const user_acc = data.auth_acc;
-                    if(user_acc == null) {
-                        throw new Error('log in first');
+                    if (!user_acc) {
+                        throw new Error("log in first");
                     }
                     const commentWrapper = document.createElement("div");
                     commentWrapper.className = "comment-wrapper mb-6";
@@ -521,16 +528,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                     commentWrapper.appendChild(commentContent);
                     send_button.style.display = "flex";
                     loading_snnipt.classList.replace("flex", "hidden");
-                    container.prepend(commentWrapper);
+                    setTimeout(() => {
+                        CommentBox.prepend(commentWrapper);
+                    }, 500);
                 }
             } catch (err) {
-                console.log(err.response.err);
-                alert(err.response.err);
-                iscomment = true;
-            }finally{
-                iscomment = false;
+                console.log(err.message);
+                alert(err.message);
+            } finally {
             }
-        });
+        };
     };
 
     const timeAgo = (time) => {

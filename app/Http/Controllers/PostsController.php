@@ -7,8 +7,6 @@ use App\Models\UserAccount;
 use Exception;
 use Illuminate\Http\Request;
 
-use function Pest\Laravel\post;
-
 class PostsController extends Controller
 {
     //
@@ -21,10 +19,10 @@ class PostsController extends Controller
                 $post = new Posts();
                 $post->text = $request->input('post_text');
                 if ($request->hasFile('post_image')) {
-                    $imagePath = $request->file('post_image')->store('posts', 'public');
+                    $imagePath = $request->file('post_image')->store('posts','public');
                     $imageUrl = asset('storage/' . $imagePath);
                     $post->image = $imageUrl;
-                } else {
+                } else { 
                     $post->image = null;
                 }
                 $post->account_id = $account_id->id;
