@@ -63,24 +63,24 @@
     </div>
         
         <div class="flex flex-col justify-center items-center w-full h-screen p-5">
-            <div class="flex flex-col w-full max-w-[600px] rounded-md bg-[#2D2D2D] gap-[10px] min-h-[calc(100vh-60px)] md:min-h-[100vh]">
-            <h1 id='acc_name' class="text-center text-2xl text-white capitalize font-light p-2 border border-white border-t-0 border-l-0 border-r-0">{{ $account->name }}</h1>
-            <div class="flex center gap-[50px] p-5 text-white"><img id="profile_image" src="{{ $account->image }}" alt="profile-photo" class="w-[70px] h-[70px] object-cover rounded-full">
-            <div class="flex justify-between items-center gap-[80px] font-extralight capitalize">
+            <div class="flex flex-col w-full md:max-w-[800px] h-screen rounded-md bg-[#151515] gap-[10px]">
+            <h1 id='acc_name' class="text-center text-3xl text-white font-extrabold p-2 border border-white border-t-0 border-l-0 border-r-0">{{ $account->name }}</h1>
+            <div class="flex center gap-[50px] md:gap-[100px] p-5 text-white"><img id="profile_image" src="{{ $account->image }}" alt="profile-photo" class="w-[100px] h-[100px] md:w-[200px] md:h-[200px] object-cover rounded-full">
+            <div class="flex justify-between items-center gap-[40px] md:gap-[80px] font-extralight capitalize">
                 <div id='post' class="flex flex-col text-center cursor-pointer">
-                <p id="acc_post" class="text-[17px]">{{ $account->posts_count }}</p>
-                <p class="capitalize text-[15px] text-white">post</p>
+                <p id="acc_post" class="text-[20px] font-extrabold">{{ $account->posts_count }}</p>
+                <p class="capitalize text-[15px] text-white font-bold">post</p>
             </div>
             <div id='follower' onclick="followerToggle()" class="flex flex-col text-center cursor-pointer">
-                <p id="follower_count" class="text-[17px]">{{ $account->followers_count }}</p>
-                <p class="capitalize text-[15px] text-white">follower</p>
+                <p id="follower_count" class="text-[20px] font-extrabold">{{ $account->followers_count }}</p>
+                <p class="capitalize text-[15px] text-white font-bold">follower</p>
             </div><div id='following' onclick="followingToggle()" class="flex flex-col text-center cursor-pointer">
-                <p id="following_count" class="text-[17px]">{{ $account->followings_count }}</p>
-                <p class="capitalize text-[15px] text-white">following</p>
+                <p id="following_count" class="text-[20px] font-extrabold">{{ $account->followings_count }}</p>
+                <p class="capitalize text-[15px] text-white font-bold">following</p>
             </div></div>
         </div>
            <div class="space-y-3 px-4">
-             <p id="about_acc" class="capitalize text-md text-white font-light ml-3">{{ $account->about }}</p>
+             <p id="about_acc" class="capitalize text-md text-white font-semibold ml-3">{{ $account->about }}</p>
              <button id="follow" send-data-id = '{{ $account->id }}' class="hidden w-full py-1 bg-sky-300 capitalize font-light text-black rounded-md cursor-pointer duration-200 hover:bg-sky-200">follow</button>
            <div id="loading" class="flex justify-center w-full py-1">
             <div class="loading">

@@ -89,32 +89,32 @@
         </div>
         
         <div id="show_account" class="flex-col justify-center items-center w-full h-screen p-5 hidden">
-            <div class="flex flex-col border w-full md:w-[600px] h-screen overflow-y-auto rounded-md bg-black gap-[10px]">
-            <h1 id='acc_name' class="text-center text-2xl text-white capitalize font-light p-2 border border-white border-t-0 border-l-0 border-r-0"></h1>
-            <div class="flex center gap-[50px] p-5 text-white"><img id="profile_image" alt="profile-photo" class="w-[100px] h-[100px] object-cover rounded-full">
-            <div class="flex justify-between items-center gap-[100px] font-extralight capitalize">
+            <div class="flex flex-col border w-full md:w-[800px] h-screen overflow-y-auto rounded-md bg-[#151515] gap-[10px]">
+            <h1 id='acc_name' class="text-center text-3xl text-white font-extrabold p-2 border border-white border-t-0 border-l-0 border-r-0"></h1>
+            <div class="flex center gap-[50px] p-5 text-white"><img id="profile_image" alt="profile-photo" class="w-[70px] h-[70px] md:w-[200px] md:h-[200px] object-cover rounded-full">
+            <div class="flex justify-between items-center gap-[50px] md:gap-[100px] font-extralight capitalize">
                 <div id='post' class="flex flex-col text-center cursor-pointer">
-                <p id="acc_post" class="text-[17px]">...</p>
-                <p class="capitalize text-[15px] text-white">post</p>
+                <p id="acc_post" class="text-[20px] font-extrabold ">...</p>
+                <p class="capitalize text-[15px] text-white font-bold ">post</p>
             </div>
             <div id='follower' onclick="followerToggle()" class="flex flex-col text-center cursor-pointer">
-                <p id="follower_count" class="text-[17px]">...</p>
-                <p class="capitalize text-[15px] text-white">follower</p>
+                <p id="follower_count" class="text-[20px] font-extrabold ">...</p>
+                <p class="capitalize text-[15px] text-white font-bold ">follower</p>
             </div><div id='following' onclick="followingToggle()" class="flex flex-col text-center cursor-pointer">
-                <p id="following_count" class="text-[17px]">...</p>
-                <p class="capitalize text-[15px] text-white">following</p>
+                <p id="following_count" class="text-[20px] font-extrabold ">...</p>
+                <p class="capitalize text-[15px] text-white font-bold ">following</p>
             </div></div>
         </div>
             <div>
-                <p id="about_acc" class="capitalize text-md text-white font-light ml-3">about</p>
+                <p id="about_acc" class="capitalize text-xl text-white font-semibold ml-3">about</p>
             </div>
             <div class="p-3">
-                <button id="edit" class="w-full py-1 capitalize font-light text-white rounded-md cursor-pointer border-1 border-sky-200">edit profile</button>
+                <button id="edit" class="w-full py-1 capitalize font-semibold text-white rounded-md cursor-pointer border-1 border-sky-200">edit profile</button>
             </div>
-            <div class="flex justify-between items-center gap-3 mt-[30px] px-[50px] md:px-[100px]">
-                <button id="eye" class="py-1 px-[50px] capitalize font-light text-black bg-white rounded-md cursor-pointer text-xl duration-200 hover:scale-110"><i class="fa-solid fa-eye"></i></button>
-                <button id="like" class="py-1 px-[50px] capitalize font-light text-black bg-white rounded-md cursor-pointer text-xl duration-200 hover:scale-110"><i class="fa-solid fa-heart"></i></button>
-                <button id="bookmark" class="py-1 px-[50px] capitalize font-light text-black bg-white rounded-md cursor-pointer text-xl duration-200 hover:scale-110"><i class="fa-solid fa-bookmark"></i></button>
+            <div class="flex justify-between items-center px-[20px]">
+                <button id="eye" class="py-1 px-[50px] md:px-[100px] capitalize font-semibold text-white border border-white cursor-pointer text-md duration-200 hover:bg-white hover:text-black">posts</button>
+                <button id="like" class="py-1 w-full capitalize font-semibold text-white border border-white cursor-pointer text-md duration-200 hover:bg-white hover:text-black">like</button>
+                <button id="bookmark" class="py-1 w-full capitalize font-semibold text-white border border-white cursor-pointer text-md duration-200 hover:bg-white hover:text-black">bookmarks</button>
             </div>
             <div id='activity' class="text-white h-full">
                 <h1 id="no-post" class="text-3xl capitalize text-white font-light text-center">no post</h1>

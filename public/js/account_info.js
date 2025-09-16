@@ -172,7 +172,7 @@ const followingToggle = () => {
 const CreatePost = async (account, post, container) => {
     // Create post container
     const postEl = document.createElement("div");
-    postEl.className = "post-container border-b border-gray-300 w-full p-4";
+    postEl.className = "post-container w-full p-4";
 
     // Account Info
     const accountEl = document.createElement("div");
@@ -256,7 +256,7 @@ const CreatePost = async (account, post, container) => {
 const likePost = async (post, authuser, container) => {
     // Create post container
     const postEl = document.createElement("div");
-    postEl.className = "post-container border-b border-gray-300 w-full p-4";
+    postEl.className = "post-container w-full p-4";
 
     // Account Info
     const accountEl = document.createElement("div");
@@ -346,7 +346,7 @@ const likePost = async (post, authuser, container) => {
 const BookmarkPost = async (post, authuser, container) => {
     // Create post container
     const postEl = document.createElement("div");
-    postEl.className = "post-container border-b border-gray-300 w-full p-4";
+    postEl.className = "post-container w-full p-4";
 
     // Account Info
     const accountEl = document.createElement("div");

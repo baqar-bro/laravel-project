@@ -65,7 +65,7 @@
 
         <div class="flex flex-col justify-center items-center w-full h-screen gap-4 p-3 text-white text-center">
             <h1 class="capitalize text-3xl underline">post your ideas</h1>
-        <form id="post-form" enctype="multipart/form-data" class="w-full md:w-[500px] border border-gray-400 rounded-md p-9 flex flex-col gap-5">
+        <form id="post-form" enctype="multipart/form-data" class="w-full md:w-[500px] bg-[#151515] rounded-md p-9 flex flex-col gap-5">
             @csrf
              @if($errors->any())
                     <ul>

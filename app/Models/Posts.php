@@ -9,7 +9,7 @@ class Posts extends Model
 {
     //
     use HasFactory;
-    function useracc (){
+    public function useracc (){
         return $this->belongsTo(UserAccount::class , 'account_id');
     }
 }

@@ -62,7 +62,7 @@ Route::controller(NotifyController::class)->group(function () {
     Route::get('/see/notifications' , function(){
         return view('notify.notify');
     })->name('notify.user')->middleware(AuthUser::class);
-    Route::get('/notifications', 'notifications');
+    Route::get('/get/notifications', 'notifications');
 });
 
 Route::controller(LikesController::class)->group(function () {
