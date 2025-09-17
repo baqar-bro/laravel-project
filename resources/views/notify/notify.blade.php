@@ -71,7 +71,6 @@
             <div id="todays-notification" class="mt-5">
                 <h1 class="text-left text-xl font-bold capitalize text-white p-2">today's</h1>
                 <div id="today" class="px-[20px] mt-[10px]">
-                    <h1 id='toady-no' class="text-sm font-light capitalize"></h1>
                 </div>
             <div class="flex flex-col space-y-4 mt-3 l">
                  @for ($i = 1; $i <= 2; $i++)
@@ -89,7 +88,7 @@
             <div id="tommorows-notification" class="mt-5">
                 <h1 class="text-left text-xl font-bold capitalize text-white p-2">recent day's</h1>
                 <div id="tomorrow" class="px-[20px] mt-[10px]">
-                    <h1 id='tommo-no' class="text-sm font-light capitalize"></h1>
+                    <h1 id='tommo-no' class="text-sm font-light capitalize hidden">no notification</h1>
                 </div>
             <div class="flex flex-col space-y-4 mt-3 l">
                  @for ($i = 1; $i <= 2; $i++)
@@ -107,7 +106,7 @@
             <div id="week-ago" class="mt-5">
                 <h1 class="text-left text-xl font-bold capitalize text-white p-2">week ago</h1>
             <div id="week" class="px-[20px] mt-[10px]">
-                <h1 id='week-no' class="text-sm font-light capitalize"></h1>
+                <h1 id='week-no' class="text-sm font-light capitalize hidden">no notification</h1>
             </div>
             <div class="flex flex-col space-y-4 mt-3 l">
                  @for ($i = 1; $i <= 2; $i++)

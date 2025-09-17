@@ -476,7 +476,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             try {
                 const res = await fetch("/comment/post", {
-                    method: "post",
+                    method: "POST",
                     headers: myheader,
                     body: JSON.stringify({
                         post_id: id,

@@ -7,6 +7,9 @@ const getNotifications = async () => {
     const tommorows = document.getElementById("tomorrow");
     const loader = document.querySelectorAll(".l");
     const week = document.getElementById("week");
+    let today_notification = false;
+    let tommorow_notification = false;
+    let week_notification = false;
     try {
         const getNotify = await fetch("/get/notifications", {
             method: "get",
@@ -63,12 +66,46 @@ const getNotifications = async () => {
 
                 if (day < 1) {
                     today.prepend(commentWrapper);
+                    today_notification = true;
                 } else if (day >= 1 && day < 7) {
                     tommorows.prepend(commentWrapper);
+                    tommorow_notification = true;
                 } else if (day >= 7) {
                     week.prepend(commentWrapper);
+                    week_notification = true;
                 }
             });
+
+            if (!today_notification) {
+                const no_notification = document.createElement("h1");
+                no_notification.className =
+                    "text-sm font-semibold capitalize text-white";
+                no_notification.textContent = "no notification yet";
+                today.appendChild(no_notification);
+                loader.forEach((l) => {
+                    l.classList.replace("flex", "hidden");
+                });
+            }
+            if (!tommorow_notification) {
+                const no_notification = document.createElement("h1");
+                no_notification.className =
+                    "text-sm font-semibold capitalize text-white";
+                no_notification.textContent = "no notification yet";
+                tommorows.appendChild(no_notification);
+                loader.forEach((l) => {
+                    l.classList.replace("flex", "hidden");
+                });
+            }
+            if (!week_notification) {
+                const no_notification = document.createElement("h1");
+                no_notification.className =
+                    "text-sm font-semibold capitalize text-white";
+                no_notification.textContent = "no notification yet";
+                week.appendChild(no_notification);
+                loader.forEach((l) => {
+                    l.classList.replace("flex", "hidden");
+                });
+            }
         } else {
             console.log("failed to get message");
         }

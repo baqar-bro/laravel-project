@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(async (data) => {
             if (!data.account) {
-                document.getElementById("error_msg").textContent = data.error;
+                document.getElementById("error_msg").textContent = 'create your Account';
                 loading.classList.add("hidden");
                 loading.classList.remove("flex");
                 notfound.classList.remove("hidden");

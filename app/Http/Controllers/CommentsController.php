@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comments;
+use App\Models\Posts;
 use App\Models\UserAccount;
+use App\Notifications\CommentsNotification;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -50,6 +52,11 @@ class CommentsController extends Controller
                 $newComment->comments = $request->comment;
                 $newComment->account_id = $auth_acc_id;
                 $newComment->save();
+                $findPost = Posts::find($request->post_id);
+                $postOwner = UserAccount::find($findPost->account_id);
+                if ($postOwner && $postOwner->id !== $auth_acc) {
+                    $postOwner->notify(new CommentsNotification($auth_acc, $findPost , $request->comment));
+                }
                 return response()->json([
                     'auth_acc' => $auth_acc
                 ]);

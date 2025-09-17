@@ -21,14 +21,15 @@ class notificationsFactory extends Factory
             'id' => fake()->uuid(),
             'notifiable_id' => '102',
             'notifiable_type' => 'App\Models\UserAccount',
-            'type' => 'App\Notifications\LikeNotification',
+            'type' => 'App\Notifications\CommentsNotification',
             'data' => [
                 'id' => fake()->numberBetween(6, 198),
                 'name' => fake()->name(),
                 'post_id' => fake()->numberBetween(1, 227),
-                'message' => 'someone like your post'
+                'message' => 'someone comment on your post'
             ],
             'read_at' => null,
+            'created_at' => fake()->dateTimeBetween('-10 days' , 'now')
         ];
     }
 }

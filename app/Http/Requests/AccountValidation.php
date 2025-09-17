@@ -24,7 +24,7 @@ class AccountValidation extends FormRequest
         return [
             //
             'name' => 'required|string|max:225|unique:user_accounts,name',
-            'image' => 'image|mimes:png,jpg,gif|max:2048',
+            'image' => 'image|mimes:png,jpg,gif|max:4096',
             'about' => 'string|max:60'
         ];
     }

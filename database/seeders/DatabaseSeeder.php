@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         // Posts::factory(100)->create();
-        notifications::factory(10)->create();
+        // notifications::factory(20)->create();
         // Comments::factory(1000)->create();
         // User::factory()->create([
         //     'name' => 'Test User',
