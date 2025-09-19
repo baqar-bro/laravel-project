@@ -114,6 +114,11 @@
     </script>
 
 <script src="{{ asset('js/search_acc.js') }}"></script>
+             <script>
+        window.userId = "{{ session('user_id') }}";
+     </script>
+    <script type="module" src="{{ mix('resources/js/app.js')}}"></script>
+     <script src="{{asset('js/notify.js')}}"></script>
 
 </body>
 </html>

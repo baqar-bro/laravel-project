@@ -135,9 +135,13 @@
        window.userAccountInfoUrl = "{{ route('user.account.info') }}";
    </script>
 
-    <script src="{{ asset('js/account_info.js') }}">
-           
+    <script src="{{ asset('js/account_info.js') }}">           
     </script>
+                 <script>
+        window.userId = "{{ session('user_id') }}";
+     </script>
+    <script type="module" src="{{ mix('resources/js/app.js')}}"></script>
+     <script src="{{asset('js/notify.js')}}"></script>
 
 </body>
 </html>

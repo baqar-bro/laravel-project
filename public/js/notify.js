@@ -1,5 +1,37 @@
-document.addEventListener("DOMContentLoaded", function () {
-    getNotifications();
+document.addEventListener("DOMContentLoaded", async function () {
+    await getNotifications();
+    setTimeout(() => {
+        window.Echo.private(`live-Notification.${window.userId}`).listen(
+            "LiveNotificationEvent",
+            (e) => {
+                const noitfy = document.getElementById("notify");
+                noitfy.classList.replace("hidden", "block");
+                const notify_icon =
+                    document.querySelector(".fa-solid.fa-heart");
+                notify_icon.onclick = async function () {
+                    noitfy.classList.add("hidden");
+                    try {
+                        const csrf_token = document
+                            .querySelector("meta[name='csrf-token']")
+                            .getAttribute("content");
+                        const headers = new Headers();
+                        headers.append("Content-Type", "application/json");
+                        headers.append("X-CSRF-TOKEN", csrf_token);
+                        const data = await fetch(
+                            "/markasreadall/notifications",
+                            {
+                                method: "post",
+                                headers: headers,
+                                body: JSON.stringify({ mark: true }),
+                            }
+                        );
+                    } catch (error) {
+                        // console.error(error);
+                    }
+                };
+            }
+        );
+    }, 200);
 });
 
 const getNotifications = async () => {
@@ -65,13 +97,13 @@ const getNotifications = async () => {
                 const day = Math.floor(seconds / 86400);
 
                 if (day < 1) {
-                    today.prepend(commentWrapper);
+                    today.appendChild(commentWrapper);
                     today_notification = true;
                 } else if (day >= 1 && day < 7) {
-                    tommorows.prepend(commentWrapper);
+                    tommorows.appendChild(commentWrapper);
                     tommorow_notification = true;
                 } else if (day >= 7) {
-                    week.prepend(commentWrapper);
+                    week.appendChild(commentWrapper);
                     week_notification = true;
                 }
             });
@@ -109,7 +141,9 @@ const getNotifications = async () => {
         } else {
             console.log("failed to get message");
         }
-    } catch (err) {}
+    } catch (error) {
+        console.error(error);
+    }
 };
 
 const timeAgo = (time) => {

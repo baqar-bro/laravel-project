@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthUser;
 use App\Models\Comments;
+use Illuminate\Support\Facades\Broadcast;
 
 Route::get('/', function () {
     return view('splash');
@@ -85,6 +86,7 @@ Route::controller(BookmarkController::class)->group(function(){
 
 Route::controller(NotifyController::class)->group(function(){
     Route::get('/get/notifications' , 'notifications')->middleware(AuthUser::class);
+    Route::post('/markasreadall/notifications' , 'readAllNotification')->middleware(AuthUser::class);
 });
 
 Route::get('/show/account', function () {
@@ -110,3 +112,15 @@ Route::controller(EmailsController::class)->group(
         Route::post('/email/verify', 'resetpasswordlink')->name('email.verify');
     }
 );
+
+Broadcast::routes(['middleware' => AuthUser::class]);
+
+// routes/web.php
+
+// use App\Events\LiveNotificationEvent;
+
+// Route::get('/test-event', function () {
+//     LiveNotificationEvent::dispatch();
+//     return 'Event dispatched!';
+// });
+

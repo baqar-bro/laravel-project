@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LiveNotificationEvent;
 use App\Models\Comments;
 use App\Models\Posts;
 use App\Models\UserAccount;
@@ -56,6 +57,7 @@ class CommentsController extends Controller
                 $postOwner = UserAccount::find($findPost->account_id);
                 if ($postOwner && $postOwner->id !== $auth_acc) {
                     $postOwner->notify(new CommentsNotification($auth_acc, $findPost , $request->comment));
+                     event(new LiveNotificationEvent($postOwner,'real time commiunatication runing sucessfully',));
                 }
                 return response()->json([
                     'auth_acc' => $auth_acc

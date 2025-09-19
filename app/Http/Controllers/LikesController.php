@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LiveNotification;
+use App\Events\LiveNotificationEvent;
 use App\Models\likes;
 use App\Models\Posts;
 use App\Models\UserAccount;
 use App\Notifications\LikeNotification;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
+use function Illuminate\Log\log;
 
 class LikesController extends Controller
 {
@@ -29,6 +33,7 @@ class LikesController extends Controller
                 $postOwner = UserAccount::find($findPost->account_id);
                 if ($postOwner && $postOwner->id !== $acc_id) {
                     $postOwner->notify(new LikeNotification($acc, $findPost));
+                    event(new LiveNotificationEvent($postOwner,'real time commiunatication runing sucessfully',));
                 }
 
                 return response()->json([

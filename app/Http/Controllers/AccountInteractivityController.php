@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountInteractivity;
 use App\Models\UserAccount;
+use App\Notifications\FollowNotification;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -23,6 +24,8 @@ class AccountInteractivityController extends Controller
                 $activity->followers = $user_acc->id;
                 $activity->followings = $request->id;
                 $activity->save();
+                $following_user = UserAccount::find($request->id);
+                $following_user->notify(new FollowNotification($user_acc));
 
                 return response()->json(['message' => 'success']);
             } else {

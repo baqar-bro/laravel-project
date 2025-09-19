@@ -47,8 +47,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // Post Image
         const postImage = new Image();
-        postImage.className =
-            "post-image rounded mb-3 text-black text-center";
+        postImage.className = "post-image rounded mb-3 text-black text-center";
         postImage.style.width = "max";
         postImage.style.height = "auto";
         postImage.style.maxWidth = "none";
@@ -137,7 +136,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 );
             }, 200);
             commentsLoad(post.id, Comment_box);
-            commentPost(post.id , Comment_box);
+            commentPost(post.id, Comment_box);
         });
         cross_btn.onclick = function () {
             Comment_container.classList.replace(
@@ -191,7 +190,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             "post-image flex justify-center items-center rounded mb-3 text-black text-center";
         imageload.style.width = "400px";
         imageload.style.height = "200px";
-        imageload.style.backgroundColor = 'black';
+        imageload.style.backgroundColor = "black";
         imageload.style.maxWidth = "none";
         imageload.innerHTML = `<div class="flex flex-row gap-2">
   <div class="w-4 h-4 rounded-full bg-white animate-bounce [animation-delay:.7s]"></div>
@@ -459,7 +458,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }, 1000);
     };
 
-    const commentPost = (id,CommentBox) => {
+    const commentPost = (id, CommentBox) => {
         // comment post
         const form = document.getElementById("comment-form");
         form.onsubmit = async function (e) {
